@@ -1,0 +1,10 @@
+div#header {
+    display: table;
+}
+
+div#header li {
+    display: table-cell;
+    color: whitesmoke;
+    background-color: #222222;
+    vertical-align: middle;
+}
