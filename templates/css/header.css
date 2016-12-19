@@ -1,10 +1,11 @@
 div#header {
     display: table;
+    table-layout: fixed;
+    width: 100%;
 }
 
 div#header li {
     display: table-cell;
-    color: whitesmoke;
-    background-color: #222222;
     vertical-align: middle;
+    text-align: center;
 }
