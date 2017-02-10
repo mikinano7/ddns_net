@@ -12,10 +12,16 @@ type Page struct {
 
 type Handler struct {
 	Page     Page
+	Path     string
 	Templates []string
 }
 
 func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
+	if (r.URL.Path != h.Path) {
+		http.NotFound(w, r)
+		return
+	}
+
 	template, err := template.ParseFiles(h.Templates...)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -8,32 +8,35 @@ func main() {
 
 	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
 	http.Handle("/images/", http.StripPrefix("/images/", imageHandler))
-	http.HandleFunc("/", indexHandler().Handle)
-	http.HandleFunc("/about", aboutHandler().Handle)
-	http.HandleFunc("/uploader", uploaderHandler().Handle)
+	http.HandleFunc("/", indexHandler("/").Handle)
+	http.HandleFunc("/about", aboutHandler("/about").Handle)
+	http.HandleFunc("/uploader", uploaderHandler("/uploader").Handle)
 	http.ListenAndServe(":8080", nil)
 }
 
-func indexHandler() *Handler {
+func indexHandler(path string) *Handler {
 	index := Page{Title: "index"}
 	return &Handler{
 		Page: index,
+		Path: path,
 		Templates: []string{"templates/index.html", "templates/header.html"},
 	}
 }
 
-func aboutHandler() *Handler {
+func aboutHandler(path string) *Handler {
 	about := Page{Title: "about"}
 	return &Handler{
 		Page: about,
+		Path: path,
 		Templates: []string{"templates/about.html", "templates/header.html"},
 	}
 }
 
-func uploaderHandler() *Handler {
+func uploaderHandler(path string) *Handler {
 	uploader := Page{Title: "uploader"}
 	return &Handler{
 		Page: uploader,
+		Path: path,
 		Templates: []string{"templates/uploader.html", "templates/header.html"},
 	}
 }
