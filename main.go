@@ -10,6 +10,7 @@ func main() {
 	http.Handle("/images/", http.StripPrefix("/images/", imageHandler))
 	http.HandleFunc("/", indexHandler().Handle)
 	http.HandleFunc("/about", aboutHandler().Handle)
+	http.HandleFunc("/uploader", uploaderHandler().Handle)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -29,3 +30,10 @@ func aboutHandler() *Handler {
 	}
 }
 
+func uploaderHandler() *Handler {
+	uploader := Page{Title: "uploader"}
+	return &Handler{
+		Page: uploader,
+		Templates: []string{"templates/uploader.html", "templates/header.html"},
+	}
+}

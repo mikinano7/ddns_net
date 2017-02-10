@@ -1,11 +1,45 @@
+/* header */
 div#header {
+    position: fixed;
+    background: #dd88cc;
     display: table;
     table-layout: fixed;
+    height: 72px;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-div#header li {
+div#header ul {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+div#header ul li {
+    float: left;
     display: table-cell;
     vertical-align: middle;
     text-align: center;
+    list-style-type: none;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+}
+
+div#header ul li a {
+    color: #000;
+    text-decoration: none;
+    background-image: linear-gradient(to bottom, #fefefe, #eee);
+    padding: 10px;
+    display: block !important;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+div#header ul li a:hover {
+    color: #fff;
+    text-decoration: none;
+    background: #22aa55;
 }
