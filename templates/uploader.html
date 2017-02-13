@@ -9,7 +9,29 @@
 <body>
 {{template "header"}}
 <div id="container">
-    uploader
+    <h2>アップローダ</h2>
+    <hr>
+    <div id="uploader">
+        <form enctype="multipart/form-data" action="./uploader" method="post">
+            <input type="file" name="upload_file" />
+            <input type="submit" value="upload" />
+        </form>
+    </div>
+    <hr>
+    <div id="file_list">
+        <table border=1>
+            <tr>
+                <th>Name</th>
+                <th>Download</th>
+            </tr>
+            {{range .Content}}
+            <tr>
+                <td>{{.}}</td>
+                <td><a href="./files/uploader/{{.}}" download>download</a></td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
 </div>
 </body>
 

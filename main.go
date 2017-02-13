@@ -1,6 +1,8 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func main() {
 	cssHandler := http.FileServer(http.Dir("templates/css/"))
@@ -10,7 +12,7 @@ func main() {
 	http.Handle("/images/", http.StripPrefix("/images/", imageHandler))
 	http.HandleFunc("/", indexHandler("/").Handle)
 	http.HandleFunc("/about", aboutHandler("/about").Handle)
-	http.HandleFunc("/uploader", uploaderHandler("/uploader").Handle)
+	http.HandleFunc("/uploader", uploaderHandler("/uploader").Upload)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -32,11 +34,12 @@ func aboutHandler(path string) *Handler {
 	}
 }
 
-func uploaderHandler(path string) *Handler {
+func uploaderHandler(path string) *UploadHandler {
 	uploader := Page{Title: "uploader"}
-	return &Handler{
+	handler := &Handler{
 		Page: uploader,
 		Path: path,
 		Templates: []string{"templates/uploader.html", "templates/header.html"},
 	}
+	return &UploadHandler{handler: handler}
 }
