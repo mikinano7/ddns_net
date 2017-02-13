@@ -23,11 +23,17 @@
             <tr>
                 <th>Name</th>
                 <th>Download</th>
+                <th>Remove</th>
             </tr>
             {{range .Content}}
             <tr>
                 <td>{{.}}</td>
-                <td><a href="./files/uploader/{{.}}" download>download</a></td>
+                <td>
+                    <a href="./files/uploader/{{.}}" download>download</a>
+                </td>
+                <td>
+                    <input type="button" onClick="location.href='/delete?file={{.}}'">
+                </td>
             </tr>
             {{end}}
         </table>

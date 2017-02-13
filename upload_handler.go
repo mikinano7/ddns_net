@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 )
 
+const uploaderPath = "./files/uploader/"
+
 type UploadHandler struct {
 	handler *Handler
 }
@@ -30,7 +32,7 @@ func (h *UploadHandler) Upload(w http.ResponseWriter, r *http.Request) {
 		}
 		defer file.Close()
 
-		f, err := os.OpenFile("./files/uploader/" + handler.Filename, os.O_WRONLY | os.O_CREATE, 0666)
+		f, err := os.OpenFile(uploaderPath + handler.Filename, os.O_WRONLY | os.O_CREATE, 0666)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -42,8 +44,19 @@ func (h *UploadHandler) Upload(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *UploadHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	fileName := r.URL.Query().Get("file")
+	if fileName != "" {
+		err := os.Remove(uploaderPath + fileName)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+	http.Redirect(w, r, h.handler.Path, 301)
+}
+
 func (h *UploadHandler) setContent() error {
-	files , err := ioutil.ReadDir("./files/uploader/")
+	files , err := ioutil.ReadDir(uploaderPath)
 	if err != nil {
 		return err
 	}

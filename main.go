@@ -13,6 +13,7 @@ func main() {
 	http.HandleFunc("/", indexHandler("/").Handle)
 	http.HandleFunc("/about", aboutHandler("/about").Handle)
 	http.HandleFunc("/uploader", uploaderHandler("/uploader").Upload)
+	http.HandleFunc("/delete", uploaderHandler("/uploader").Delete)
 	http.ListenAndServe(":8080", nil)
 }
 
