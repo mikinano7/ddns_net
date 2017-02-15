@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 	"io"
-	"fmt"
 	"os"
 	"io/ioutil"
 )
@@ -24,18 +23,24 @@ func (h *UploadHandler) Upload(w http.ResponseWriter, r *http.Request) {
 			h.handler.Handle(w, r)
 		}
 	} else {
+		files , err := ioutil.ReadDir(uploaderPath)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		if len(files) > 99 {
+			http.Error(w, "file upload limit exceeded.", http.StatusInternalServerError)
+		}
+
 		r.ParseMultipartForm(32 << 20)
 		file, handler, err := r.FormFile("upload_file")
 		if err != nil {
-			fmt.Println(err)
-			return
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		defer file.Close()
 
 		f, err := os.OpenFile(uploaderPath + handler.Filename, os.O_WRONLY | os.O_CREATE, 0666)
 		if err != nil {
-			fmt.Println(err)
-			return
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		defer f.Close()
 
@@ -49,7 +54,7 @@ func (h *UploadHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	if fileName != "" {
 		err := os.Remove(uploaderPath + fileName)
 		if err != nil {
-			fmt.Println(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	}
 	http.Redirect(w, r, h.handler.Path, 301)
